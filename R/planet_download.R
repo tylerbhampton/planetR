@@ -17,7 +17,7 @@ library(jsonlite)
 planet_download = function(i, overwrite = T)
 {
 
-  url <- paste0("https://api.planet.com/data/v1/item-types/",item_name,"/items/",response[i,])
+  url <- paste0("https://api.planet.com/data/v1/item-types/",item_name,"/items/",response[i])
   # print(url)
 
   # GET BASICS ASSET

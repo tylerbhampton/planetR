@@ -172,15 +172,15 @@ planet_order(api_key = api_key,
 
 # PLANET_ACTIVATE: Batch Activate 
 
-for(i in 1:nrow(response)) {
+for(i in 1:length(response)) {
   planet_activate(i, item_name = item_name)
-  print(paste("Activating", i, "of", nrow(response)))}
+  print(paste("Activating", i, "of", length(response)))}
 
 # PLANET_DOWNLOAD: Batch Download 
 
-for(i in 1:nrow(response)) {
+for(i in 1:length(response)) {
   planet_download(i)
-  print(paste("Downloading", i, "of", nrow(response)))}
+  print(paste("Downloading", i, "of", length(response)))}
   
 ```
 ![](images/download_example.png)

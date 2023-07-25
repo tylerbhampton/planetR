@@ -13,7 +13,7 @@ library(jsonlite)
 
 planet_activate = function(i, item_name = "PSOrthoTile")
 {
-  url <- paste0("https://api.planet.com/data/v1/item-types/",item_name,"/items/",response[i,])
+  url <- paste0("https://api.planet.com/data/v1/item-types/",item_name,"/items/",response[i])
   print(url)
 
   # GET BASICS ASSET
