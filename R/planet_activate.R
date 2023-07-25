@@ -5,8 +5,7 @@
 #' @param item_name Defaults to "PSOrthoTile".
 #' @keywords Planet
 #' @export
-#' @examples
-#' planet_activate()
+
 
 planet_activate = function(i, item_name = "PSOrthoTile")
 {

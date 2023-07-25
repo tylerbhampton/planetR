@@ -4,12 +4,10 @@
 #' @param bbox shapefile of bounding box must be EPSG:4326 Projection; no default.
 #' @param date_end Expects as.Date; defaults to as.Date('2018-07-01')
 #' @param date_start Expects as.Date; defaults to as.Date('2018-08-01')
-#' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10%.
+#' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10 percent.
 #' @param item_name Defaults to "PSOrthoTile".
 #' @keywords Planet
 #' @export
-#' @examples
-#' planet_search()
 
 
 planet_download = function(i, overwrite = T)

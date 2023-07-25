@@ -27,7 +27,7 @@ planet_order_request(
 
 \item{date_end}{a date object}
 
-\item{cloud_lim}{Cloud percentage from 0-1; defaults to 0.1, or 10%.}
+\item{cloud_lim}{Cloud percentage from 0-1; defaults to 0.1, or 10 percent.}
 
 \item{item_name}{Defaults to "PSScene4Band".}
 
@@ -37,8 +37,5 @@ planet_order_request(
 }
 \description{
 This function allows you to search and activate orders from the Planet Orders API
-}
-\examples{
-planet_search()
 }
 \keyword{Planet}

@@ -1,5 +1,5 @@
 Package: planetR
-Title: Search, Activate and Download Satellite Imagery from the Planet API. 
+Title: Search, Activate and Download Satellite Imagery from the Planet API
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Alexandre",
@@ -19,6 +19,7 @@ Imports:
     httr (>= 1.4.2), 
     raster (>= 3.1-5),
     jsonlite (>= 1.7.2),
-    stringr (>= 1.4.0)
+    stringr (>= 1.4.0),
+    lubridate
 Suggests: mapedit
 RoxygenNote: 7.2.3

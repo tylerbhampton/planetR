@@ -27,7 +27,7 @@ planet_order(
 
 \item{date_end}{doy start}
 
-\item{cloud_lim}{Cloud percentage from 0-1; defaults to 0.1, or 10%.}
+\item{cloud_lim}{Cloud percentage from 0-1; defaults to 0.1, or 10 percent.}
 
 \item{item_name}{Defaults to "PSScene".}
 
@@ -41,9 +41,5 @@ planet_order(
 }
 \description{
 This function allows you to download orders from the Planet Orders API
-}
-\examples{
-planet_order_request
-planet_order_download
 }
 \keyword{Planet}

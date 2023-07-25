@@ -4,15 +4,14 @@
 #' @param bbox bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.
 #' @param date_end Expects as.Date; defaults to as.Date('2018-07-01')
 #' @param date_start Expects as.Date; defaults to as.Date('2018-08-01')
-#' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10%.
+#' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10 percent.
 #' @param ground_control Defaults to TRUE, filter images to only those with ground control, ensures locational accuracy of 10 m RMSE or better
 #' @param quality Defaults to "standard", other option is "test" see https://support.planet.com/hc/en-us/articles/4407808871697-Image-quality-Standard-vs-Test-imagery
 #' @param item_name Defaults to "PSOrthoTile".
 #' @param api_key your planet api key string
 #' @keywords Planet
 #' @export
-#' @examples
-#' planet_search()
+
 
 ####
 #### Code from https://www.lentilcurtain.com/posts/accessing-planet-labs-data-api-from-r/

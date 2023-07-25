@@ -7,14 +7,13 @@
 #' @param bbox bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.
 #' @param date_start a date object
 #' @param date_end a date object
-#' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10%.
+#' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10 percent.
 #' @param item_name Defaults to "PSScene4Band".
 #' @param product_bundle Defaults to "analytic_sr"
 #' @param order The name you want to assign to your order. Defaults to "AutomationTEST"
 #' @keywords Planet
 #' @export
-#' @examples
-#' planet_search()
+
 
 planet_order_request <-
   function(api_key,
@@ -193,7 +192,7 @@ planet_order_download <- function(order_id, exportfolder, api_key) {
 #' @param bbox bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.
 #' @param date_start a date object
 #' @param date_end doy start
-#' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10%.
+#' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10 percent.
 #' @param item_name Defaults to "PSScene".
 #' @param product_bundle Defaults to "analytic_sr_udm2
 #' @param asset Defaults to "ortho_analytic_4b_sr"
@@ -201,9 +200,7 @@ planet_order_download <- function(order_id, exportfolder, api_key) {
 #' @param mostrecent Integer of how many of the most recent images will be downloaded. Default is 0 (download all images).
 #' @keywords Planet
 #' @export
-#' @examples
-#' planet_order_request
-#' planet_order_download
+
 
 planet_order <- function(api_key,
                          bbox,

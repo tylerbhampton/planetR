@@ -14,7 +14,4 @@ planet_activate(i, item_name = "PSOrthoTile")
 \description{
 This function allows you to activate assets using the Planet API. Assets cannot be downloaded until activated.
 }
-\examples{
-planet_activate()
-}
 \keyword{Planet}

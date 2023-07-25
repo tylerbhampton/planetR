@@ -13,14 +13,11 @@ planet_download(i, overwrite = T)
 
 \item{date_start}{Expects as.Date; defaults to as.Date('2018-08-01')}
 
-\item{cloud_lim}{Cloud percentage from 0-1; defaults to 0.1, or 10%.}
+\item{cloud_lim}{Cloud percentage from 0-1; defaults to 0.1, or 10 percent.}
 
 \item{item_name}{Defaults to "PSOrthoTile".}
 }
 \description{
 This function allows you to search the Planet API
-}
-\examples{
-planet_search()
 }
 \keyword{Planet}

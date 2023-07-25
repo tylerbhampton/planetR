@@ -24,7 +24,7 @@ planet_search(
 
 \item{date_start}{Expects as.Date; defaults to as.Date('2018-08-01')}
 
-\item{cloud_lim}{Cloud percentage from 0-1; defaults to 0.1, or 10%.}
+\item{cloud_lim}{Cloud percentage from 0-1; defaults to 0.1, or 10 percent.}
 
 \item{ground_control}{Defaults to TRUE, filter images to only those with ground control, ensures locational accuracy of 10 m RMSE or better}
 
@@ -36,8 +36,5 @@ planet_search(
 }
 \description{
 This function allows you to search the Planet API
-}
-\examples{
-planet_search()
 }
 \keyword{Planet}
