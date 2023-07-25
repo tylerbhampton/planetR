@@ -11,8 +11,6 @@
 #' @examples
 #' planet_search()
 
-library(httr)
-library(jsonlite)
 
 planet_download = function(i, overwrite = T)
 {

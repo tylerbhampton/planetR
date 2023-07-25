@@ -18,10 +18,6 @@
 #### Code from https://www.lentilcurtain.com/posts/accessing-planet-labs-data-api-from-r/
 ####
 
-library(httr)
-library(jsonlite)
-
-
 planet_search <- function(bbox=bbox,
                           date_end = NULL,
                           date_start = NULL,
@@ -105,7 +101,7 @@ planet_search <- function(bbox=bbox,
         config = list(jsonlite::unbox(quality))
       ))
   )
-  
+
   # combine filters
   filter_configs <- list(
     type= jsonlite::unbox("AndFilter"),

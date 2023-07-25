@@ -21,3 +21,4 @@ Imports:
     jsonlite (>= 1.7.2),
     stringr (>= 1.4.0)
 Suggests: mapedit
+RoxygenNote: 7.2.3

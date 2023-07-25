@@ -16,13 +16,6 @@
 #' @examples
 #' planet_search()
 
-library(sf)
-library(here)
-library(httr)
-library(jsonlite)
-library(raster)
-library(stringr)
-
 planet_order_request <-
   function(api_key,
            bbox,
@@ -132,7 +125,7 @@ planet_order_request <-
 #' @param exportfolder The name you want to assign to your order
 #' @keywords Planet
 #' @export
-#' @examples
+
 
 planet_order_download <- function(order_id, exportfolder, api_key) {
   #GET order for download
