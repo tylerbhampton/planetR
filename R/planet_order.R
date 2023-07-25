@@ -129,12 +129,12 @@ planet_order_request <-
 #'
 #' This function allows you to download orders from the Planet Orders API
 #' @param order_id request order id (output from `planet_order_request()`)
-#' @param order_name The name you want to assign to your order
+#' @param exportfolder The name you want to assign to your order
 #' @keywords Planet
 #' @export
 #' @examples
 
-planet_order_download <- function(order_id, order_name, api_key) {
+planet_order_download <- function(order_id, exportfolder, api_key) {
   #GET order for download
   #If you lose the order_id, don't redo the request, log onto planet and find it in the orders menu
   #order_id for example SMV2 order: "dab92990-ce3a-456c-8ad6-ca0c569b4a1a"
@@ -159,7 +159,7 @@ planet_order_download <- function(order_id, order_name, api_key) {
   print("Starting download")
 
   #First create download folder:
-  dir.create(order_name, showWarnings = F)
+  dir.create(exportfolder, showWarnings = F)
 
   #Download each item in order
   for (i in 1:length(get_content$`_links`$results)) {
@@ -179,7 +179,7 @@ planet_order_download <- function(order_id, order_name, api_key) {
       url = download_url,
       username = api_key,
       httr::write_disk(
-        path = paste(order_name, filename, sep = "/"),
+        path = paste(exportfolder, filename, sep = "/"),
         overwrite = TRUE
       )
     )
@@ -187,7 +187,7 @@ planet_order_download <- function(order_id, order_name, api_key) {
   }
 
   print(paste0("Download complete"))
-  print(paste0("Items located in ", getwd(), "/", order_name))
+  print(paste0("Items located in ", getwd(), "/", exportfolder))
 
 }
 
@@ -252,6 +252,6 @@ planet_order <- function(api_key,
 
   }
 
-  planet_order_download(order_id, order_name, api_key = api_key)
+  planet_order_download(order_id, exportfolder=order_name, api_key = api_key)
 
 }
