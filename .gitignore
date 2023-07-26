@@ -1,9 +1,9 @@
 .Rhistory
 .Rproj.user
+planetR.Rproj
 api.csv
 .gitattributes
 .Rbuildignore
 .DS_Store
 example
-R/old_planet_download_withClip.R
 /exports
