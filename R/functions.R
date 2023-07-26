@@ -2,9 +2,9 @@
 #'
 #' This function allows you to search the Planet API
 #' @param api_key your planet api key string
-#' @param bbox bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.
-#' @param date_end Expects as.Date; defaults to as.Date('2018-07-01')
-#' @param date_start Expects as.Date; defaults to as.Date('2018-08-01')
+#' @param bbox bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.
+#' @param date_end Expects as.Date
+#' @param date_start Expects as.Date
 #' @param list_dates Default to NULL. a vector of dates, to substitute `date_start` and `date_end`
 #' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10 percent.
 #' @param ground_control Defaults to TRUE, filter images to only those with ground control, ensures locational accuracy of 10 m RMSE or better
@@ -38,16 +38,16 @@ planet_search <- function(bbox=bbox,
   geo_json_geometry <- list(
     type=jsonlite::unbox("Polygon"),
     coordinates = list(list(
-      c(bbox@xmin,
-        bbox@ymin),
-      c(bbox@xmin,
-        bbox@ymax),
-      c(bbox@xmax,
-        bbox@ymax),
-      c(bbox@xmax,
-        bbox@ymin),
-      c(bbox@xmin,
-        bbox@ymin)
+      c(bbox$xmin,
+        bbox$ymin),
+      c(bbox$xmin,
+        bbox$ymax),
+      c(bbox$xmax,
+        bbox$ymax),
+      c(bbox$xmax,
+        bbox$ymin),
+      c(bbox$xmin,
+        bbox$ymin)
     ))
   )
 
@@ -188,6 +188,34 @@ planet_search <- function(bbox=bbox,
 }
 
 
+
+#' A function to create bbox objects to feed into planet_search()
+#'
+#' This function can take input values and create a bbox to be fed to the `planet_search()` function.
+#' @param coords a vector of longitude latitude values, format: c(long1, long2, lat1, lat2) or c(long1,lat1)
+#' @param outputtype a character string specifying sf::st_bbox (DEFAULT) or terra::ext  as the output format
+#' @param bufferdist a distance in unit lat/long degrees for buffering if only a single point is provided in `coords`. Defaults to 0.01 degrees approximately 1 kilometre.
+#' @keywords Planet
+#' @export
+
+
+bbox_coords = function(coords,
+                       outputtype="sf", # possible values "sf" or "terra
+                       bufferdist=0.01
+                       )
+{
+  if(length(coords)==4){
+    if(outputtype=="terra"){bbox = terra::ext(coords) ; return(bbox)}
+    if(outputtype=="sf"){bbox = sf::st_bbox(terra::ext(coords)) ; return(bbox)}
+  }
+  if(length(coords)==2){
+    print("Defaulting to outputtype=sf and point buffering")
+    coords = st_as_sf(data.frame(long=coords[1],lat=coords[2]),coords=c("long","lat"))
+    bbox = st_bbox(st_buffer(coords,bufferdist)) ; return(bbox)
+  }
+
+}
+
 #' A function to batch activate the results from planet_search()
 #'
 #' This function allows you to activate assets using the Planet API. Assets cannot be downloaded until activated. Function meant to be performed in a loop.
@@ -311,7 +339,7 @@ planet_download = function(item,
 #'
 #' This function allows you to search and activate orders from the Planet Orders API
 #' @param api_key a string containing your API Key for your planet account
-#' @param bbox bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.
+#' @param bbox bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.
 #' @param date_start a date object
 #' @param date_end a date object
 #' @param list_dates Default to NULL. a vector of dates, to substitute `date_start` and `date_end`
@@ -377,16 +405,16 @@ planet_order_request <-
 
     aoi = list(type = jsonlite::unbox("Polygon"),
                coordinates = list(list(
-                 c(bbox@xmin,
-                   bbox@ymin),
-                 c(bbox@xmin,
-                   bbox@ymax),
-                 c(bbox@xmax,
-                   bbox@ymax),
-                 c(bbox@xmax,
-                   bbox@ymin),
-                 c(bbox@xmin,
-                   bbox@ymin)
+                 c(bbox$xmin,
+                   bbox$ymin),
+                 c(bbox$xmin,
+                   bbox$ymax),
+                 c(bbox$xmax,
+                   bbox$ymax),
+                 c(bbox$xmax,
+                   bbox$ymin),
+                 c(bbox$xmin,
+                   bbox$ymin)
                )))
 
     #json structure needs specific nesting, double nested for tools hence the list(list())
@@ -434,7 +462,7 @@ planet_order_request <-
 #' This function allows you to search and activate orders from the Planet Orders API
 #' @param api_key a string containing your API Key for your planet account
 #' @param items a vector containing items to request
-#' @param bbox bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.
+#' @param bbox bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.
 #' @param item_name Defaults to "PSScene4Band".
 #' @param product_bundle Defaults to "analytic_sr"
 #' @param asset Defaults to "ortho_analytic_4b_sr"
@@ -464,16 +492,16 @@ planet_order_request_items <-
 
     aoi = list(type = jsonlite::unbox("Polygon"),
                coordinates = list(list(
-                 c(bbox@xmin,
-                   bbox@ymin),
-                 c(bbox@xmin,
-                   bbox@ymax),
-                 c(bbox@xmax,
-                   bbox@ymax),
-                 c(bbox@xmax,
-                   bbox@ymin),
-                 c(bbox@xmin,
-                   bbox@ymin)
+                 c(bbox$xmin,
+                   bbox$ymin),
+                 c(bbox$xmin,
+                   bbox$ymax),
+                 c(bbox$xmax,
+                   bbox$ymax),
+                 c(bbox$xmax,
+                   bbox$ymin),
+                 c(bbox$xmin,
+                   bbox$ymin)
                )))
 
     #json structure needs specific nesting, double nested for tools hence the list(list())
@@ -591,7 +619,7 @@ planet_order_download <- function(order_id,
 #'
 #' This function allows you to download orders from the Planet Orders API
 #' @param api_key a string containing your API Key for your planet account
-#' @param bbox bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.
+#' @param bbox bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.
 #' @param date_start a date object
 #' @param date_end a date object
 #' @param list_dates Default to NULL. a vector of dates, to substitute `date_start` and `date_end`
