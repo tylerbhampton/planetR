@@ -18,11 +18,11 @@ planet_search(
 )
 }
 \arguments{
-\item{bbox}{bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.}
+\item{bbox}{bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.}
 
-\item{date_end}{Expects as.Date; defaults to as.Date('2018-07-01')}
+\item{date_end}{Expects as.Date}
 
-\item{date_start}{Expects as.Date; defaults to as.Date('2018-08-01')}
+\item{date_start}{Expects as.Date}
 
 \item{list_dates}{Default to NULL. a vector of dates, to substitute `date_start` and `date_end`}
 

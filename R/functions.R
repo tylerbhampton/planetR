@@ -210,8 +210,8 @@ bbox_coords = function(coords,
   }
   if(length(coords)==2){
     print("Defaulting to outputtype=sf and point buffering")
-    coords = st_as_sf(data.frame(long=coords[1],lat=coords[2]),coords=c("long","lat"))
-    bbox = st_bbox(st_buffer(coords,bufferdist)) ; return(bbox)
+    coords = sf::st_as_sf(data.frame(long=coords[1],lat=coords[2]),coords=c("long","lat"))
+    bbox = sf::st_bbox(sf::st_buffer(coords,bufferdist)) ; return(bbox)
   }
 
 }

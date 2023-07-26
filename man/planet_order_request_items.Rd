@@ -7,21 +7,17 @@
 planet_order_request_items(
   items,
   bbox,
-  cloud_lim = 0.1,
   item_name = "PSScene4Band",
   product_bundle = "analytic_sr",
   asset = "ortho_analytic_4b_sr",
   order_name,
-  mostrecent,
   api_key
 )
 }
 \arguments{
 \item{items}{a vector containing items to request}
 
-\item{bbox}{bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.}
-
-\item{cloud_lim}{Cloud percentage from 0-1; defaults to 0.1, or 10 percent.}
+\item{bbox}{bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.}
 
 \item{item_name}{Defaults to "PSScene4Band".}
 
@@ -30,8 +26,6 @@ planet_order_request_items(
 \item{asset}{Defaults to "ortho_analytic_4b_sr"}
 
 \item{order_name}{The name you want to assign to your order.}
-
-\item{mostrecent}{Integer of how many of the most recent images will be downloaded. Default is 0 (download all images).}
 
 \item{api_key}{a string containing your API Key for your planet account}
 }

@@ -19,7 +19,7 @@ planet_order_request(
 )
 }
 \arguments{
-\item{bbox}{bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.}
+\item{bbox}{bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.}
 
 \item{date_start}{a date object}
 
