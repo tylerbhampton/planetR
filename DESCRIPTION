@@ -17,10 +17,10 @@ Imports:
     httr (>= 1.4.2), 
     jsonlite (>= 1.7.2),
     stringr (>= 1.4.0),
+    sf (>= 1.0-1),
+    terra,
     lubridate
 Suggests: 
     mapedit,
-    sf (>= 1.0-1),
-    here (>= 1.0.1),
-    raster (>= 3.1-5)
+    here (>= 1.0.1)
 RoxygenNote: 7.2.3
