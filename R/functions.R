@@ -435,12 +435,10 @@ planet_order_request <-
 #' @param api_key a string containing your API Key for your planet account
 #' @param items a vector containing items to request
 #' @param bbox bounding box made with extent() from the raster package; must be EPSG:4326 Projection; no default.
-#' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10 percent.
 #' @param item_name Defaults to "PSScene4Band".
 #' @param product_bundle Defaults to "analytic_sr"
 #' @param asset Defaults to "ortho_analytic_4b_sr"
 #' @param order_name The name you want to assign to your order.
-#' @param mostrecent Integer of how many of the most recent images will be downloaded. Default is 0 (download all images).
 #' @keywords Planet
 #' @export
 
@@ -448,12 +446,10 @@ planet_order_request <-
 planet_order_request_items <-
   function(items,
            bbox,
-           cloud_lim = 0.1,
            item_name = "PSScene4Band",
            product_bundle = "analytic_sr",
            asset = "ortho_analytic_4b_sr",
            order_name,
-           mostrecent,
            api_key) {
 
 
