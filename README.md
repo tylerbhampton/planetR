@@ -12,13 +12,14 @@ There are two API's:
 
 ```{r functions}
 
-## current functions (API v1)
+## current functions ('Data' API)
 planetR::planet_search()
 planetR::planet_activate()
 planetR::planet_download()
 
-## current functions (Orders API v2)
+## current functions ('Orders' API)
 planetR::planet_order_request()
+planetR::planet_order_request_items()
 planetR::planet_order_download()
 planetR::planet_order()
 
@@ -30,7 +31,7 @@ You can install planetR directly from this GitHub repository. To do so, you will
 
 ```{r installation}
 install.packages("remotes")
-remotes::install_github("bevingtona/planetR")
+remotes::install_github("tylerbhampton/planetR")
 library(planetR)
 ```
 
@@ -72,7 +73,8 @@ product_bundle <- "analytic_8b_sr_udm2" # https://developers.planet.com/docs/int
 asset <- "ortho_udm2" # (see https://developers.planet.com/docs/data/items-assets/)
 
 # Set AOI (many ways to set this!) ultimately just need an extent object from terra::ext or sf::st_bbox
-#         Note!! The terra package is prefered over the raster package, and in this package fork raster is not compatible.
+#         Note!! The terra package is prefered over the raster package, 
+#         and in this package fork raster is not compatible.
 # OPTION 1: Import feature
 my_aoi       = read_sf("path_to_file.sqlite") # KML, SHP, SQLITE, or other
 bbox         = sf::st_bbox(my_aoi)
@@ -81,7 +83,13 @@ bbox         = sf::st_bbox(my_aoi)
 bbox         = terra::ext(-129,-127,50,51)
 
 # Set/Create Export Folder
-exportfolder <- paste(site, item_name, asset, lubridate::year(date_start), lubridate::year(date_end),  lubridate::yday(date_start),  lubridate::yday(date_end), sep = "_")
+exportfolder <- paste(site,
+                      item_name, 
+                      asset, 
+                      lubridate::year(date_start),
+                      lubridate::year(date_end),  
+                      lubridate::yday(date_start),  
+                      lubridate::yday(date_end), sep = "_")
 
 if(!(dir.exists("exports"))){
 dir.create("exports", showWarnings = F)
