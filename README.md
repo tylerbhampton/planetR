@@ -2,6 +2,8 @@
 
 Some R tools to search, activate and download satellite imagery from the Planet API (https://developers.planet.com/docs/api/). The current purpose of the package is to Search the API, batch activate all assets, and then batch download them. 
 
+This is a fork from [bevingtona/planetR](https://github.com/bevingtona/planetR).
+
 There are two API's: 
 - v1 Planet API
 - v2 Planet Orders API (can clip and pre-process scenes to AOI on server)
@@ -32,7 +34,7 @@ remotes::install_github("bevingtona/planetR")
 library(planetR)
 ```
 
-#### Example using Planet Orders API v2
+#### Example using the Planet 'Orders' API
 
 This is an example of how to search, activate and download assets using `planetR`.
 
@@ -42,7 +44,6 @@ This is an example of how to search, activate and download assets using `planetR
 library(planetR)
 library(httr)
 library(jsonlite)
-library(raster)
 library(stringr)
 library(sf)
 
@@ -50,6 +51,9 @@ library(sf)
 
 # Site name that will be used in the export folder name
 site = "MySite"
+
+# Order name that will appear on your PlanetLabs web portal
+order_name = "TestDownload"
 
 # Set Workspace (optional)
 setwd("")
@@ -67,15 +71,14 @@ item_name <- "PSScene" # (see https://developers.planet.com/docs/data/items-asse
 product_bundle <- "analytic_8b_sr_udm2" # https://developers.planet.com/docs/integrations/gee/delivery/
 asset <- "ortho_udm2" # (see https://developers.planet.com/docs/data/items-assets/)
 
-# Set AOI (many ways to set this!) ultimately just need an extent()
+# Set AOI (many ways to set this!) ultimately just need an extent object from terra::ext or sf::st_bbox
+#         Note!! The terra package is prefered over the raster package, and in this package fork raster is not compatible.
 # OPTION 1: Import feature
 my_aoi       = read_sf("path_to_file.sqlite") # KML, SHP, SQLITE, or other
-bbox         = extent(my_aoi)
-# OPTION 2: Digitize om map
-my_aoi       = mapedit::editMap() # Set in GUI
-bbox         = extent(my_aoi)
-# OPTION 3: Set bounding box manually
-bbox         = extent(-129,-127,50,51)
+bbox         = sf::st_bbox(my_aoi)
+
+# OPTION 2: Set bounding box manually
+bbox         = terra::ext(-129,-127,50,51)
 
 # Set/Create Export Folder
 exportfolder <- paste(site, item_name, asset, lubridate::year(date_start), lubridate::year(date_end),  lubridate::yday(date_start),  lubridate::yday(date_end), sep = "_")
@@ -96,8 +99,10 @@ planet_order(api_key = api_key,
              item_name = item_name, 
              product_bundle = product_bundle,
              asset = asset,
-             mostrecent = 1, # downloads the 1 most recent image
-             order_name = exportfolder)
+             order_name = order_name,
+             exportfolder = exportfolder,
+             mostrecent = 1 # downloads the 1 most recent image
+             )
              
 
 [1] "Found 6 suitable PSScene4Band analytic_sr images"
@@ -154,62 +159,45 @@ planet_order(api_key = api_key,
 
 ```
 
-#### Example using Planet API v1
+#### Example using the Planet 'Data' API
 
 ```{r example_v1}
 
 # PLANET_SEARCH: Search API
 
-  response <- planet_search(bbox = bbox,
-              date_end = date_end,
-              date_start = date_start,
-              cloud_lim = cloud_lim,
-              item_name = item_name,
-              asset = asset,
-              api_key = api_key)
+  items <- planet_search(bbox = bbox,
+                            date_end = date_end,
+                            date_start = date_start,
+                            cloud_lim = cloud_lim,
+                            item_name = item_name,
+                            asset = asset,
+                            api_key = api_key)
               
-  print(paste("Images available:", length(response), item_name, asset))
+  print(paste("Images available:", length(items), item_name, asset))
 
 # PLANET_ACTIVATE: Batch Activate 
 
-for(i in 1:length(response)) {
-  planet_activate(i, item_name = item_name)
-  print(paste("Activating", i, "of", length(response)))}
+for(i in 1:length(items)) {
+  item = items[i]
+  planet_activate(item,
+                  item_name = item_name,
+                  asset = asset,
+                  api_key = api_key)
+  print(paste("Activating", i, "of", length(items)))
+}
 
 # PLANET_DOWNLOAD: Batch Download 
 
-for(i in 1:length(response)) {
-  planet_download(i)
-  print(paste("Downloading", i, "of", length(response)))}
+for(i in 1:length(items)) {
+  item = items[i]
+  planet_download(item,
+                  item_name = item_name,
+                  asset = asset,
+                  exportfolder = exportfolder,
+                  api_key = api_key)
+  print(paste("Downloading", i, "of", length(items)))
+}
   
 ```
 ![](images/download_example.png)
 
-
-### Project Status
-
-Very early/experimental status. 
-
-### Getting Help or Reporting an Issue
-
-To report bugs/issues/feature requests, please file an [issue](https://github.com/bevingtona/planetR/issues/).
-
-### How to Contribute
-
-If you would like to contribute to the package, please see our 
-[CONTRIBUTING](CONTRIBUTING.md) guidelines.
-
-Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
-
-### License
-
-```
-Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and limitations under the License.
