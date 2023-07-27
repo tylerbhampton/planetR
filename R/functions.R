@@ -218,7 +218,7 @@ bbox_coords = function(coords,
 
 #' A function to batch activate the results from planet_search()
 #'
-#' This function allows you to activate assets using the Planet API. Assets cannot be downloaded until activated. Function meant to be performed in a loop.
+#' This function allows you to activate assets using the Planet 'Data' API. Assets cannot be downloaded until activated. Function meant to be performed in a loop.
 #' @param api_key a string containing your API Key for your planet account
 #' @param item ID of one item (output from `planet_search()`)
 #' @param item_name Defaults to "PSOrthoTile".
@@ -265,7 +265,7 @@ planet_activate = function(item,
 
 #' A function to download activated Planet imagery
 #'
-#' This function allows you to search the Planet API
+#' This function allows you to download imagery using the Planet 'Data' API, after use of the `planet_activate()` function.
 #' @param api_key a string containing your API Key for your planet account
 #' @param item ID of one item (output from `planet_search()`)
 #' @param item_name Defaults to "PSOrthoTile".
@@ -337,7 +337,7 @@ planet_download = function(item,
 
 #' A function to order Planet imagery
 #'
-#' This function allows you to search and activate orders from the Planet Orders API
+#' This function allows you to search and activate orders from the Planet 'Orders' API. This function wraps the `planet_search()` function and places an order for the specified number of 'most recent' images.
 #' @param api_key a string containing your API Key for your planet account
 #' @param bbox bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.
 #' @param date_start a date object
@@ -459,9 +459,9 @@ planet_order_request <-
 
 #' A function to order Planet imagery
 #'
-#' This function allows you to search and activate orders from the Planet Orders API
+#' This function allows you to search and activate orders from the Planet 'Orders' API. This function allows for manual selection of items from the `planet_search()` function
 #' @param api_key a string containing your API Key for your planet account
-#' @param items a vector containing items to request
+#' @param items a vector containing items to request: an output of `planet_search()`
 #' @param bbox bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.
 #' @param item_name Defaults to "PSScene4Band".
 #' @param product_bundle Defaults to "analytic_sr"
@@ -545,7 +545,7 @@ planet_order_request_items <-
 
 #' A function to order Planet imagery
 #'
-#' This function allows you to download orders from the Planet Orders API, after placing the order using the `planet_order_request()` or `planet_order_request_items()` functions
+#' This function allows you to download orders from the Planet 'Orders' API, after placing the order using the `planet_order_request()` or `planet_order_request_items()` functions
 #' @param api_key a string containing your API Key for your planet account
 #' @param order_id request order id (output from `planet_order_request()` or `planet_order_request_items()`)
 #' @param exportfolder The name of the directory you want your files to be downloaded into
@@ -617,7 +617,7 @@ planet_order_download <- function(order_id,
 
 #' A function to order Planet imagery
 #'
-#' This function allows you to download orders from the Planet Orders API
+#' This function allows you to download orders from the Planet 'Orders' API. This function serves as a wrapper of `planet_order_request()` and `planet_order_download()`
 #' @param api_key a string containing your API Key for your planet account
 #' @param bbox bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.
 #' @param date_start a date object
