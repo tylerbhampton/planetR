@@ -45,6 +45,6 @@ planet_order(
 \item{api_key}{a string containing your API Key for your planet account}
 }
 \description{
-This function allows you to download orders from the Planet Orders API
+This function allows you to download orders from the Planet 'Orders' API. This function serves as a wrapper of `planet_order_request()` and `planet_order_download()`
 }
 \keyword{Planet}

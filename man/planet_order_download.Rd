@@ -14,6 +14,6 @@ planet_order_download(order_id, exportfolder, api_key)
 \item{api_key}{a string containing your API Key for your planet account}
 }
 \description{
-This function allows you to download orders from the Planet Orders API, after placing the order using the `planet_order_request()` or `planet_order_request_items()` functions
+This function allows you to download orders from the Planet 'Orders' API, after placing the order using the `planet_order_request()` or `planet_order_request_items()` functions
 }
 \keyword{Planet}

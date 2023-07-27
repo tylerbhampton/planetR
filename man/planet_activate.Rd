@@ -21,6 +21,6 @@ planet_activate(
 \item{api_key}{a string containing your API Key for your planet account}
 }
 \description{
-This function allows you to activate assets using the Planet API. Assets cannot be downloaded until activated. Function meant to be performed in a loop.
+This function allows you to activate assets using the Planet 'Data' API. Assets cannot be downloaded until activated. Function meant to be performed in a loop.
 }
 \keyword{Planet}

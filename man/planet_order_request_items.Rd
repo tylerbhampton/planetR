@@ -6,7 +6,8 @@
 \usage{
 planet_order_request_items(
   items,
-  bbox,
+  clip = TRUE,
+  bbox = NULL,
   item_name = "PSScene4Band",
   product_bundle = "analytic_sr",
   asset = "ortho_analytic_4b_sr",
@@ -15,9 +16,11 @@ planet_order_request_items(
 )
 }
 \arguments{
-\item{items}{a vector containing items to request}
+\item{items}{a vector containing items to request: an output of `planet_search()`}
 
-\item{bbox}{bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.}
+\item{clip}{Indicates whether to CLIP *each* image in the order to the *same* bbox. Defaults to TRUE. Should only be used if images cover the same geographic extent.}
+
+\item{bbox}{Used if clip=TRUE. Bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.}
 
 \item{item_name}{Defaults to "PSScene4Band".}
 
@@ -30,6 +33,6 @@ planet_order_request_items(
 \item{api_key}{a string containing your API Key for your planet account}
 }
 \description{
-This function allows you to search and activate orders from the Planet Orders API
+This function allows you to search and activate orders from the Planet 'Orders' API. This function allows for manual selection of items from the `planet_search()` function
 }
 \keyword{Planet}

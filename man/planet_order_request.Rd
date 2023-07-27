@@ -42,6 +42,6 @@ planet_order_request(
 \item{api_key}{a string containing your API Key for your planet account}
 }
 \description{
-This function allows you to search and activate orders from the Planet Orders API
+This function allows you to search and activate orders from the Planet 'Orders' API. This function wraps the `planet_search()` function and places an order for the specified number of 'most recent' images.
 }
 \keyword{Planet}

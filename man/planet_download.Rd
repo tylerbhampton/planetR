@@ -27,6 +27,6 @@ planet_download(
 \item{overwrite}{Defaults to TRUE. Overwrite file in `exportfolder`?}
 }
 \description{
-This function allows you to search the Planet API
+This function allows you to download imagery using the Planet 'Data' API, after use of the `planet_activate()` function.
 }
 \keyword{Planet}
