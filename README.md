@@ -70,7 +70,7 @@ date_end   <- as.Date("2022-04-01")
 cloud_lim <- 0.02 # percent from 0-1
 item_name <- "PSScene" # (see https://developers.planet.com/docs/data/items-assets/)
 product_bundle <- "analytic_8b_sr_udm2" # https://developers.planet.com/docs/integrations/gee/delivery/
-asset <- "ortho_udm2" # (see https://developers.planet.com/docs/data/items-assets/)
+asset <- "ortho_analytic_8b_sr" # (see https://developers.planet.com/docs/data/items-assets/)
 
 # Set AOI (many ways to set this!) ultimately just need an extent object from terra::ext or sf::st_bbox
 #         Note!! The terra package is prefered over the raster package, 
