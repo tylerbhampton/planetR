@@ -6,7 +6,27 @@ This is a fork from [bevingtona/planetR](https://github.com/bevingtona/planetR).
 
 There are two API's: 
 - Planet 'Data' API
+  - Search, Assess and Download Planet’s complete imagery catalog
 - Planet 'Orders' API (can clip and pre-process scenes to AOI on server)
+  - Order, Customize and Deliver imagery
+
+### Items and Assets
+
+| Terms | Description | Example Value |
+| --- | --- | --- |
+| [```item_name```](https://developers.planet.com/docs/data/items-assets/) | The class of spacecraft and/or the processing level of an ```item```. | [PSScene](https://developers.planet.com/docs/data/psscene/): This item-type includes imagery from PlanetScope sensors |
+| [```product_ _bundle```](https://developers.planet.com/docs/integrations/gee/delivery/) | Comprises a group of ```assets``` for an ```item```. With the Orders API, you have to specify the product bundles in your request. | analytic_8b_sr_udm2 (Corrected Surface Reflectance 8b) <br> For ```item_name``` = [PSScene](https://developers.planet.com/apis/orders/product-bundles-reference/) <br> • Available ```assets``` incl. ortho_analytic_8b_sr, ortho_analytic_8b_xml, ortho_udm2 |
+| [```asset```](https://developers.planet.com/docs/data/items-assets/) | A product that can be derived from an ```item's``` source data (i.e. bands). | ortho_analytic_8b_sr: PlanetScope atmospherically corrected surface reflectance product  – recommended for most analytic applications. |
+| ```item``` | Entry in our catalog, and generally represents a single observation (or scene) captured by a satellite. | Consists of a set of properties including the date of capture |
+
+
+Properties for an ```item``` include:
+
+| Name | Description | Type |
+| --- | --- | --- |
+| ```cloud_cover``` | Ratio of the area covered by clouds to that which is uncovered. | double between [0-1] |
+
+
 
 ### Functions
 
@@ -62,15 +82,18 @@ setwd("")
 # Set API
 api_key = "" 
 
+# Specify Product
+item_name <- "PSScene"
+product_bundle <- "analytic_8b_sr_udm2" 
+asset <- "ortho_analytic_8b_sr"
+
 # Date range of interest
 date_start <- as.Date("2022-01-01")
 date_end   <- as.Date("2022-04-01")
 
 # Metadata filters
 cloud_lim <- 0.02 # percent from 0-1
-item_name <- "PSScene" # (see https://developers.planet.com/docs/data/items-assets/)
-product_bundle <- "analytic_8b_sr_udm2" # https://developers.planet.com/docs/integrations/gee/delivery/
-asset <- "ortho_analytic_8b_sr" # (see https://developers.planet.com/docs/data/items-assets/)
+
 
 # Set AOI (many ways to set this!) ultimately just need an extent object from terra::ext or sf::st_bbox
 #         Note!! The terra package is prefered over the raster package, 
