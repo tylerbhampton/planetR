@@ -10,7 +10,7 @@ planet_order_request_items(
   bbox = NULL,
   item_name = "PSScene4Band",
   product_bundle = "analytic_sr",
-  asset = "ortho_analytic_4b_sr",
+  asset = "ortho_analytic_8b_sr",
   order_name,
   api_key
 )
@@ -22,11 +22,11 @@ planet_order_request_items(
 
 \item{bbox}{Used if clip=TRUE. Bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.}
 
-\item{item_name}{Defaults to "PSScene4Band".}
+\item{item_name}{Defaults to "PSScene".}
 
-\item{product_bundle}{Defaults to "analytic_sr"}
+\item{product_bundle}{Defaults to "analytic_sr_udm2}
 
-\item{asset}{Defaults to "ortho_analytic_4b_sr"}
+\item{asset}{Defaults to "ortho_analytic_8b_sr"}
 
 \item{order_name}{The name you want to assign to your order.}
 

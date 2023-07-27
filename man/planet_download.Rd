@@ -7,7 +7,7 @@
 planet_download(
   item,
   item_name = "PSOrthoTile",
-  asset = "ortho_analytic_4b_sr",
+  asset = "ortho_analytic_8b_sr",
   exportfolder,
   api_key,
   overwrite = T
@@ -18,7 +18,7 @@ planet_download(
 
 \item{item_name}{Defaults to "PSOrthoTile".}
 
-\item{asset}{Defaults to "ortho_analytic_4b_sr"}
+\item{asset}{Defaults to "ortho_analytic_8b_sr"}
 
 \item{exportfolder}{The name of the directory you want your files to be downloaded into}
 

@@ -12,7 +12,7 @@ planet_order(
   cloud_lim = 0.1,
   item_name = "PSScene",
   product_bundle = "analytic_sr_udm2",
-  asset = "ortho_analytic_4b_sr",
+  asset = "ortho_analytic_8b_sr",
   order_name,
   exportfolder,
   mostrecent = 0,
@@ -34,7 +34,7 @@ planet_order(
 
 \item{product_bundle}{Defaults to "analytic_sr_udm2}
 
-\item{asset}{Defaults to "ortho_analytic_4b_sr"}
+\item{asset}{Defaults to "ortho_analytic_8b_sr"}
 
 \item{order_name}{The name you want to assign to your order}
 

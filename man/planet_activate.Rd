@@ -7,7 +7,7 @@
 planet_activate(
   item,
   item_name = "PSOrthoTile",
-  asset = "ortho_analytic_4b_sr",
+  asset = "ortho_analytic_8b_sr",
   api_key
 )
 }
@@ -16,7 +16,7 @@ planet_activate(
 
 \item{item_name}{Defaults to "PSOrthoTile".}
 
-\item{asset}{Defaults to "ortho_analytic_4b_sr"}
+\item{asset}{Defaults to "ortho_analytic_8b_sr"}
 
 \item{api_key}{a string containing your API Key for your planet account}
 }

@@ -13,7 +13,7 @@ planet_search(
   ground_control = TRUE,
   quality = "standard",
   item_name = "PSScene",
-  asset = "ortho_analytic_4b_sr",
+  asset = "ortho_analytic_8b_sr",
   api_key
 )
 }
@@ -32,9 +32,9 @@ planet_search(
 
 \item{quality}{Defaults to "standard", other option is "test" see https://support.planet.com/hc/en-us/articles/4407808871697-Image-quality-Standard-vs-Test-imagery}
 
-\item{item_name}{Defaults to "PSOrthoTile".}
+\item{item_name}{Defaults to "PSScene".}
 
-\item{asset}{Defaults to "ortho_analytic_4b_sr"}
+\item{asset}{Defaults to "ortho_analytic_8b_sr"}
 
 \item{api_key}{your planet api key string}
 }

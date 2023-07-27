@@ -9,8 +9,8 @@
 #' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10 percent.
 #' @param ground_control Defaults to TRUE, filter images to only those with ground control, ensures locational accuracy of 10 m RMSE or better
 #' @param quality Defaults to "standard", other option is "test" see https://support.planet.com/hc/en-us/articles/4407808871697-Image-quality-Standard-vs-Test-imagery
-#' @param item_name Defaults to "PSOrthoTile".
-#' @param asset Defaults to "ortho_analytic_4b_sr"
+#' @param item_name Defaults to "PSScene".
+#' @param asset Defaults to "ortho_analytic_8b_sr"
 #' @keywords Planet
 #' @export
 
@@ -27,7 +27,7 @@ planet_search <- function(bbox=bbox,
                           ground_control = TRUE,
                           quality = "standard",
                           item_name = "PSScene",
-                          asset = "ortho_analytic_4b_sr" ,
+                          asset = "ortho_analytic_8b_sr" ,
                           api_key
 )
 
@@ -222,14 +222,14 @@ bbox_coords = function(coords,
 #' @param api_key a string containing your API Key for your planet account
 #' @param item ID of one item (output from `planet_search()`)
 #' @param item_name Defaults to "PSOrthoTile".
-#' @param asset Defaults to "ortho_analytic_4b_sr"
+#' @param asset Defaults to "ortho_analytic_8b_sr"
 #' @keywords Planet
 #' @export
 
 
 planet_activate = function(item,
                            item_name = "PSOrthoTile",
-                           asset="ortho_analytic_4b_sr",
+                           asset="ortho_analytic_8b_sr",
                            api_key)
 {
   url <- paste0("https://api.planet.com/data/v1/item-types/",item_name,"/items/",item)
@@ -269,7 +269,7 @@ planet_activate = function(item,
 #' @param api_key a string containing your API Key for your planet account
 #' @param item ID of one item (output from `planet_search()`)
 #' @param item_name Defaults to "PSOrthoTile".
-#' @param asset Defaults to "ortho_analytic_4b_sr"
+#' @param asset Defaults to "ortho_analytic_8b_sr"
 #' @param exportfolder The name of the directory you want your files to be downloaded into
 #' @param overwrite Defaults to TRUE. Overwrite file in `exportfolder`?
 #' @keywords Planet
@@ -278,7 +278,7 @@ planet_activate = function(item,
 
 planet_download = function(item,
                            item_name = "PSOrthoTile",
-                           asset="ortho_analytic_4b_sr",
+                           asset="ortho_analytic_8b_sr",
                            exportfolder,
                            api_key,
                            overwrite = T)
@@ -345,8 +345,8 @@ planet_download = function(item,
 #' @param list_dates Default to NULL. a vector of dates, to substitute `date_start` and `date_end`
 #' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10 percent.
 #' @param item_name Defaults to "PSScene4Band".
-#' @param product_bundle Defaults to "analytic_sr"
-#' @param asset Defaults to "ortho_analytic_4b_sr"
+#' @param product_bundle Defaults to "analytic_sr_udm2
+#' @param asset Defaults to "ortho_analytic_8b_sr"
 #' @param order_name The name you want to assign to your order. Defaults to "AutomationTEST"
 #' @param mostrecent Integer of how many of the most recent images will be downloaded. Default is 0 (download all images).
 #' @keywords Planet
@@ -361,7 +361,7 @@ planet_order_request <-
            cloud_lim=0.1,
            item_name = "PSScene4Band",
            product_bundle = "analytic_sr",
-           asset = "ortho_analytic_4b_sr",
+           asset = "ortho_analytic_8b_sr",
            order_name,
            mostrecent,
            api_key) {
@@ -464,9 +464,9 @@ planet_order_request <-
 #' @param items a vector containing items to request: an output of `planet_search()`
 #' @param clip Indicates whether to CLIP *each* image in the order to the *same* bbox. Defaults to TRUE. Should only be used if images cover the same geographic extent.
 #' @param bbox Used if clip=TRUE. Bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.
-#' @param item_name Defaults to "PSScene4Band".
-#' @param product_bundle Defaults to "analytic_sr"
-#' @param asset Defaults to "ortho_analytic_4b_sr"
+#' @param item_name Defaults to "PSScene".
+#' @param product_bundle Defaults to "analytic_sr_udm2
+#' @param asset Defaults to "ortho_analytic_8b_sr"
 #' @param order_name The name you want to assign to your order.
 #' @keywords Planet
 #' @export
@@ -478,7 +478,7 @@ planet_order_request_items <-
            bbox = NULL,
            item_name = "PSScene4Band",
            product_bundle = "analytic_sr",
-           asset = "ortho_analytic_4b_sr",
+           asset = "ortho_analytic_8b_sr",
            order_name,
            api_key) {
 
@@ -633,7 +633,7 @@ planet_order_download <- function(order_id,
 #' @param cloud_lim Cloud percentage from 0-1; defaults to 0.1, or 10 percent.
 #' @param item_name Defaults to "PSScene".
 #' @param product_bundle Defaults to "analytic_sr_udm2
-#' @param asset Defaults to "ortho_analytic_4b_sr"
+#' @param asset Defaults to "ortho_analytic_8b_sr"
 #' @param order_name The name you want to assign to your order
 #' @param exportfolder The name of the directory you want your files to be downloaded into
 #' @param mostrecent Integer of how many of the most recent images will be downloaded. Default is 0 (download all images).
@@ -648,7 +648,7 @@ planet_order <- function(bbox,
                          cloud_lim = 0.1,
                          item_name="PSScene",
                          product_bundle="analytic_sr_udm2",
-                         asset="ortho_analytic_4b_sr",
+                         asset="ortho_analytic_8b_sr",
                          order_name,
                          exportfolder,
                          mostrecent = 0,

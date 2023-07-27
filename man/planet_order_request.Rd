@@ -12,7 +12,7 @@ planet_order_request(
   cloud_lim = 0.1,
   item_name = "PSScene4Band",
   product_bundle = "analytic_sr",
-  asset = "ortho_analytic_4b_sr",
+  asset = "ortho_analytic_8b_sr",
   order_name,
   mostrecent,
   api_key
@@ -31,9 +31,9 @@ planet_order_request(
 
 \item{item_name}{Defaults to "PSScene4Band".}
 
-\item{product_bundle}{Defaults to "analytic_sr"}
+\item{product_bundle}{Defaults to "analytic_sr_udm2}
 
-\item{asset}{Defaults to "ortho_analytic_4b_sr"}
+\item{asset}{Defaults to "ortho_analytic_8b_sr"}
 
 \item{order_name}{The name you want to assign to your order. Defaults to "AutomationTEST"}
 
