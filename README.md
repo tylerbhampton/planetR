@@ -5,8 +5,8 @@ Some R tools to search, activate and download satellite imagery from the Planet 
 This is a fork from [bevingtona/planetR](https://github.com/bevingtona/planetR).
 
 There are two API's: 
-- v1 Planet API
-- v2 Planet Orders API (can clip and pre-process scenes to AOI on server)
+- Planet 'Data' API
+- Planet 'Orders' API (can clip and pre-process scenes to AOI on server)
 
 ### Functions
 
