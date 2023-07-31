@@ -665,6 +665,7 @@ planet_order <- function(bbox,
                                      asset = asset,
                                      order_name=order_name,
                                      api_key=api_key)
+    return(order_id)
 
   }else{
 
@@ -678,6 +679,7 @@ planet_order <- function(bbox,
                                      order_name=order_name,
                                      api_key=api_key,
                                      mostrecent=mostrecent)
+    return(order_id)
 
 
   }
