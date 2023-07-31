@@ -570,52 +570,59 @@ planet_order_download <- function(order_id,
 
   get_order <- httr::GET(url = url2,
                          username = api_key)
-  #Download links are in here, under _links>results>location
-  get_content <- httr::content(get_order)
-  #When state = 'success', ready for download
 
-  #check if order is ready
-  while (get_content$state != "success") {
-    print("Order still being proccessed, trying again in 60 seconds...")
-    print(get_content$state)
-    Sys.sleep(60)
-    get_order <- httr::GET(url = url2, username = api_key)
+  if(get_order$status_code == 404){
+    print(httr::content(get_order)$message)
+  }
+  if(get_order$status_code == 200){
+    #Download links are in here, under _links>results>location
     get_content <- httr::content(get_order)
-  }
+    #When state = 'success', ready for download
 
-  ##Time to download!
-  print("Starting download")
+    #check if order is ready
+    while (get_content$state != "success") {
+      print("Order still being proccessed, trying again in 60 seconds...")
+      print(get_content$state)
+      Sys.sleep(60)
+      get_order <- httr::GET(url = url2, username = api_key)
+      get_content <- httr::content(get_order)
+    }
 
-  #First create download folder:
-  dir.create(exportfolder, showWarnings = F)
+    ##Time to download!
+    print("Starting download")
 
-  #Download each item in order
-  for (i in 1:length(get_content$`_links`$results)) {
-    print(paste0("Download: ", signif(100 * (
-      i / length(get_content$`_links`$results)
-    ), 1), "%"))
-    #find item names in order contents
-    name <- get_content$`_links`$results[[i]]$name
-    findslash <- gregexpr("/", name)
-    startchar <- findslash[[1]][length(findslash[[1]])] + 1
-    filename <- substr(name, startchar, nchar(name))
+    #First create download folder:
+    dir.create(exportfolder, showWarnings = F)
 
-    download_url <- get_content$`_links`$results[[i]]$location
+    #Download each item in order
+    for (i in 1:length(get_content$`_links`$results)) {
+      print(paste0("Download: ", signif(100 * (
+        i / length(get_content$`_links`$results)
+      ), 1), "%"))
+      #find item names in order contents
+      name <- get_content$`_links`$results[[i]]$name
+      findslash <- gregexpr("/", name)
+      startchar <- findslash[[1]][length(findslash[[1]])] + 1
+      filename <- substr(name, startchar, nchar(name))
 
-    httr::RETRY(
-      "GET",
-      url = download_url,
-      username = api_key,
-      httr::write_disk(
-        path = paste(exportfolder, filename, sep = "/"),
-        overwrite = TRUE
+      download_url <- get_content$`_links`$results[[i]]$location
+
+      httr::RETRY(
+        "GET",
+        url = download_url,
+        username = api_key,
+        httr::write_disk(
+          path = paste(exportfolder, filename, sep = "/"),
+          overwrite = TRUE
+        )
       )
-    )
+
+    }
+
+    print(paste0("Download complete"))
+    print(paste0("Items located in ", getwd(), "/", exportfolder))
 
   }
-
-  print(paste0("Download complete"))
-  print(paste0("Items located in ", getwd(), "/", exportfolder))
 
 }
 
