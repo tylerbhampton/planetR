@@ -6,7 +6,7 @@
 \usage{
 planet_order_request_items(
   items,
-  clip = TRUE,
+  doclip = TRUE,
   bbox = NULL,
   item_name = "PSScene4Band",
   product_bundle = "analytic_sr",
@@ -18,9 +18,9 @@ planet_order_request_items(
 \arguments{
 \item{items}{a vector containing items to request: an output of `planet_search()`}
 
-\item{clip}{Indicates whether to CLIP *each* image in the order to the *same* bbox. Defaults to TRUE. Should only be used if images cover the same geographic extent.}
+\item{doclip}{Indicates whether to CLIP *each* image in the order to the *same* bbox. Defaults to TRUE. Should only be used if images cover the same geographic extent.}
 
-\item{bbox}{Used if clip=TRUE. Bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.}
+\item{bbox}{Used if doclip=TRUE. Bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.}
 
 \item{item_name}{Defaults to "PSScene".}
 

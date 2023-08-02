@@ -462,8 +462,8 @@ planet_order_request <-
 #' This function allows you to search and activate orders from the Planet 'Orders' API. This function allows for manual selection of items from the `planet_search()` function
 #' @param api_key a string containing your API Key for your planet account
 #' @param items a vector containing items to request: an output of `planet_search()`
-#' @param clip Indicates whether to CLIP *each* image in the order to the *same* bbox. Defaults to TRUE. Should only be used if images cover the same geographic extent.
-#' @param bbox Used if clip=TRUE. Bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.
+#' @param doclip Indicates whether to CLIP *each* image in the order to the *same* bbox. Defaults to TRUE. Should only be used if images cover the same geographic extent.
+#' @param bbox Used if doclip=TRUE. Bounding box made with ext() from the terra package; must be EPSG:4326 Projection; no default.
 #' @param item_name Defaults to "PSScene".
 #' @param product_bundle Defaults to "analytic_sr_udm2
 #' @param asset Defaults to "ortho_analytic_8b_sr"
@@ -474,7 +474,7 @@ planet_order_request <-
 
 planet_order_request_items <-
   function(items,
-           clip = TRUE,
+           doclip = TRUE,
            bbox = NULL,
            item_name = "PSScene4Band",
            product_bundle = "analytic_sr",
@@ -492,7 +492,7 @@ planet_order_request_items <-
       )
     )
 
-    if(clip){
+    if(doclip){
       aoi = list(type = jsonlite::unbox("Polygon"),
                  coordinates = list(list(
                    c(bbox$xmin,
@@ -514,11 +514,11 @@ planet_order_request_items <-
 
     #Build request body and convert to json
     order_name = jsonlite::unbox(order_name)
-    if(clip){order_body <-
+    if(doclip){order_body <-
       list(name = order_name,
            products = products,
            tools = tools)}
-    if(!clip){order_body <-
+    if(!doclip){order_body <-
       list(name = order_name,
            products = products)}
 
