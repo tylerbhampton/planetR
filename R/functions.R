@@ -392,7 +392,7 @@ planet_order_request <-
                              api_key=api_key)
 
     }
-
+    items = items$id
     if(mostrecent > 0){
       items = sort(items, decreasing = T)[1:mostrecent]
       print(paste("Selected",mostrecent,"most recent images."))
