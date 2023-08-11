@@ -137,6 +137,11 @@ planet_search <- function(bbox=bbox,
       permissions <- data.frame(id = res$features$id[i],
                                 i = i,
                                 asset = gsub("assets.","",permissions[,1]),
+                                instrument = res$features$properties$instrument[i],
+                                geometry = paste0(c(
+                                  res$features$geometry$coordinates[[i]][,,1],
+                                  res$features$geometry$coordinates[[i]][,,2]
+                                ),collapse=","),
                                 permission = permissions[,2])
       return(permissions)}))
 
@@ -181,7 +186,7 @@ planet_search <- function(bbox=bbox,
     }
 
     if(nrow(permissions)>0){
-      return(permissions$id)}else{
+      return(permissions)}else{
         print(paste("You DO NOT have DOWNLOAD permissions for these images. You have", toupper(unique(permissions$permission)), "permission"))
       }
   }
