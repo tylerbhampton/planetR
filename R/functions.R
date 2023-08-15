@@ -128,67 +128,71 @@ planet_search <- function(bbox=bbox,
   # Read first page
   res <- jsonlite::fromJSON(httr::content(request, as = "text", encoding = "UTF-8"))
 
-  check_permission <- function(res){
+  if(length(res$features$`_permissions`)==0){print("Zero features found matching description")}
+  if(length(res$features$`_permissions`)>0){
+    check_permission <- function(res){
 
-    # Check Permissions
-    permissions <- do.call(rbind, lapply(1:length(res$features$`_permissions`),function(i){
+      # Check Permissions
+      permissions <- do.call(rbind, lapply(1:length(res$features$`_permissions`),function(i){
 
-      permissions <- stringr::str_split(res$features$`_permissions`[[i]], ":", simplify = T)
-      permissions <- data.frame(id = res$features$id[i],
-                                i = i,
-                                asset = gsub("assets.","",permissions[,1]),
-                                instrument = res$features$properties$instrument[i],
-                                geometry = paste0(c(
-                                  res$features$geometry$coordinates[[i]][,,1],
-                                  res$features$geometry$coordinates[[i]][,,2]
-                                ),collapse=","),
-                                permission = permissions[,2])
-      return(permissions)}))
+        permissions <- stringr::str_split(res$features$`_permissions`[[i]], ":", simplify = T)
+        permissions <- data.frame(id = res$features$id[i],
+                                  i = i,
+                                  asset = gsub("assets.","",permissions[,1]),
+                                  instrument = res$features$properties$instrument[i],
+                                  geometry = paste0(c(
+                                    res$features$geometry$coordinates[[i]][,,1],
+                                    res$features$geometry$coordinates[[i]][,,2]
+                                  ),collapse=","),
+                                  permission = permissions[,2])
+        return(permissions)}))
 
-    resDFid <- permissions[permissions$asset==asset,]
-    resDFid[resDFid$permission=="download",]
-  }
-
-  permissions <- check_permission(res)
-
-  # Read following pages, if exist
-  while(is.null(res$`_links`$`_next`)==FALSE){
-    request <- httr::GET(httr::content(request)$`_links`$`_next`, httr::content_type_json(), httr::authenticate(api_key, ""))
-    res <- jsonlite::fromJSON(httr::content(request, as = "text", encoding = "UTF-8"))
-    if(is.null(unlist(res$features))==FALSE){
-      permissions <- rbind(permissions, check_permission(res))
-    }
-  }
-
-  permissions <- permissions[!is.na(permissions$id),]
-
-  if(unique(permissions$permission) == "download"){
-    print(paste("You have DOWNLOAD permissions for these images."))
-
-    permissions$date = as.Date.character(permissions$id,format = "%Y%m%d")
-    permissions$yday = as.numeric(format(permissions$date, "%j"))
-
-    if(is.null(list_dates)==FALSE){
-
-      permissions <- permissions[permissions$date %in% list_dates,]
-      print(paste("Found",nrow(permissions),"suitable",item_name, asset, "images that you have permission to download."))
-      print(paste("In list of",length(list_dates), "dates from", min(list_dates),"to", max(list_dates)))
-
-    }else{
-
-      start_doy <- lubridate::yday(date_start)
-      end_doy <- lubridate::yday(date_end)
-
-      #permissions <- permissions[permissions$yday>=start_doy & permissions$yday<=end_doy,]
-      print(paste("Found",nrow(permissions),"suitable",item_name, asset, "images that you have permission to download."))
-      print(paste("Between yday:", start_doy, "to", end_doy))
-
+      resDFid <- permissions[permissions$asset==asset,]
+      resDFid[resDFid$permission=="download",]
     }
 
-    if(nrow(permissions)>0){
-      return(permissions)}else{
-        print(paste("You DO NOT have DOWNLOAD permissions for these images. You have", toupper(unique(permissions$permission)), "permission"))
+    permissions <- check_permission(res)
+
+    # Read following pages, if exist
+    while(is.null(res$`_links`$`_next`)==FALSE){
+      request <- httr::GET(httr::content(request)$`_links`$`_next`, httr::content_type_json(), httr::authenticate(api_key, ""))
+      res <- jsonlite::fromJSON(httr::content(request, as = "text", encoding = "UTF-8"))
+      if(is.null(unlist(res$features))==FALSE){
+        permissions <- rbind(permissions, check_permission(res))
       }
+    }
+
+    permissions <- permissions[!is.na(permissions$id),]
+
+    if(unique(permissions$permission) == "download"){
+      print(paste("You have DOWNLOAD permissions for these images."))
+
+      permissions$date = as.Date.character(permissions$id,format = "%Y%m%d")
+      permissions$yday = as.numeric(format(permissions$date, "%j"))
+
+      if(is.null(list_dates)==FALSE){
+
+        permissions <- permissions[permissions$date %in% list_dates,]
+        print(paste("Found",nrow(permissions),"suitable",item_name, asset, "images that you have permission to download."))
+        print(paste("In list of",length(list_dates), "dates from", min(list_dates),"to", max(list_dates)))
+
+      }else{
+
+        start_doy <- lubridate::yday(date_start)
+        end_doy <- lubridate::yday(date_end)
+
+        #permissions <- permissions[permissions$yday>=start_doy & permissions$yday<=end_doy,]
+        print(paste("Found",nrow(permissions),"suitable",item_name, asset, "images that you have permission to download."))
+        print(paste("Between yday:", start_doy, "to", end_doy))
+
+      }
+
+      if(nrow(permissions)>0){
+        return(permissions)
+      }else{
+          print(paste("You DO NOT have DOWNLOAD permissions for these images. You have", toupper(unique(permissions$permission)), "permission"))
+      }
+    }
   }
 }
 
