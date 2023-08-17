@@ -567,13 +567,16 @@ planet_order_request_items <-
 #' @param api_key a string containing your API Key for your planet account
 #' @param order_id request order id (output from `planet_order_request()` or `planet_order_request_items()`)
 #' @param exportfolder The name of the directory you want your files to be downloaded into
+#' @param wait defaults to FALSE. Should the algorithm wait until the order is ready (TRUE), or cancel the task (FALSE)
 #' @keywords Planet
 #' @export
 
 
 planet_order_download <- function(order_id,
                                   exportfolder,
-                                  api_key) {
+                                  api_key,
+                                  wait = FALSE
+                                  ) {
   #GET order for download
   #If you lose the order_id, don't redo the request, log onto planet and find it in the orders menu
   #order_id for example SMV2 order: "dab92990-ce3a-456c-8ad6-ca0c569b4a1a"
@@ -590,51 +593,55 @@ planet_order_download <- function(order_id,
     get_content <- httr::content(get_order)
     #When state = 'success', ready for download
 
+
     #check if order is ready
-    while (get_content$state != "success") {
-      print("Order still being proccessed, trying again in 60 seconds...")
-      print(get_content$state)
-      Sys.sleep(60)
-      get_order <- httr::GET(url = url2, username = api_key)
-      get_content <- httr::content(get_order)
+    if(wait){
+      while (get_content$state != "success") {
+        print("Order still being proccessed, trying again in 60 seconds...")
+        print(get_content$state)
+        Sys.sleep(60)
+        get_order <- httr::GET(url = url2, username = api_key)
+        get_content <- httr::content(get_order)
+      }
     }
 
-    ##Time to download!
-    print("Starting download")
+    if(get_content$state == "success"){
 
-    #First create download folder:
-    dir.create(exportfolder, showWarnings = F)
+      ##Time to download!
+      print("Starting download")
 
-    #Download each item in order
-    for (i in 1:length(get_content$`_links`$results)) {
-      print(paste0("Download: ", signif(100 * (
-        i / length(get_content$`_links`$results)
-      ), 1), "%"))
-      #find item names in order contents
-      name <- get_content$`_links`$results[[i]]$name
-      findslash <- gregexpr("/", name)
-      startchar <- findslash[[1]][length(findslash[[1]])] + 1
-      filename <- substr(name, startchar, nchar(name))
+      #First create download folder:
+      dir.create(exportfolder, showWarnings = F)
 
-      download_url <- get_content$`_links`$results[[i]]$location
+      #Download each item in order
+      for (i in 1:length(get_content$`_links`$results)) {
+        print(paste0("Download: ", signif(100 * (
+          i / length(get_content$`_links`$results)
+        ), 1), "%"))
+        #find item names in order contents
+        name <- get_content$`_links`$results[[i]]$name
+        findslash <- gregexpr("/", name)
+        startchar <- findslash[[1]][length(findslash[[1]])] + 1
+        filename <- substr(name, startchar, nchar(name))
 
-      httr::RETRY(
-        "GET",
-        url = download_url,
-        username = api_key,
-        httr::write_disk(
-          path = paste(exportfolder, filename, sep = "/"),
-          overwrite = TRUE
+        download_url <- get_content$`_links`$results[[i]]$location
+
+        httr::RETRY(
+          "GET",
+          url = download_url,
+          username = api_key,
+          httr::write_disk(
+            path = paste(exportfolder, filename, sep = "/"),
+            overwrite = TRUE
+          )
         )
-      )
 
+      }
+
+      print(paste0("Download complete"))
+      print(paste0("Items located in ", getwd(), "/", exportfolder))
     }
-
-    print(paste0("Download complete"))
-    print(paste0("Items located in ", getwd(), "/", exportfolder))
-
   }
-
 }
 
 
