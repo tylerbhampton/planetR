@@ -568,6 +568,8 @@ planet_order_request_items <-
 #' @param order_id request order id (output from `planet_order_request()` or `planet_order_request_items()`)
 #' @param exportfolder The name of the directory you want your files to be downloaded into
 #' @param wait defaults to FALSE. Should the algorithm wait until the order is ready (TRUE), or cancel the task (FALSE)
+#' @param redownload defaults to FALSE. Should the algorithm check if files exist in the exportfolder (FALSE), or redownload all files (TRUE)
+#' @param downloadcount defaults to FALSE. Should a ticker be presented displaying the percentage of files downloaded from the order
 #' @keywords Planet
 #' @export
 
@@ -575,7 +577,9 @@ planet_order_request_items <-
 planet_order_download <- function(order_id,
                                   exportfolder,
                                   api_key,
-                                  wait = FALSE
+                                  wait = FALSE,
+                                  redownload = FALSE,
+                                  downloadcount = FALSE
                                   ) {
   #GET order for download
   #If you lose the order_id, don't redo the request, log onto planet and find it in the orders menu
@@ -615,27 +619,30 @@ planet_order_download <- function(order_id,
 
       #Download each item in order
       for (i in 1:length(get_content$`_links`$results)) {
-        print(paste0("Download: ", signif(100 * (
-          i / length(get_content$`_links`$results)
-        ), 1), "%"))
+        if(downloadcount){
+          print(paste0("Download: ", signif(100 * (
+            i / length(get_content$`_links`$results)
+          ), 1), "%"))
+        }
         #find item names in order contents
         name <- get_content$`_links`$results[[i]]$name
         findslash <- gregexpr("/", name)
         startchar <- findslash[[1]][length(findslash[[1]])] + 1
         filename <- substr(name, startchar, nchar(name))
 
-        download_url <- get_content$`_links`$results[[i]]$location
+        if(!file.exists(file.path(exportfolder,filename)) | redownload){
+          download_url <- get_content$`_links`$results[[i]]$location
 
-        httr::RETRY(
-          "GET",
-          url = download_url,
-          username = api_key,
-          httr::write_disk(
-            path = paste(exportfolder, filename, sep = "/"),
-            overwrite = TRUE
+          httr::RETRY(
+            "GET",
+            url = download_url,
+            username = api_key,
+            httr::write_disk(
+              path = paste(exportfolder, filename, sep = "/"),
+              overwrite = TRUE
+            )
           )
-        )
-
+        }
       }
 
       print(paste0("Download complete"))

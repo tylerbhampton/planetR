@@ -4,7 +4,14 @@
 \alias{planet_order_download}
 \title{A function to order Planet imagery}
 \usage{
-planet_order_download(order_id, exportfolder, api_key, wait = FALSE)
+planet_order_download(
+  order_id,
+  exportfolder,
+  api_key,
+  wait = FALSE,
+  redownload = FALSE,
+  downloadcount = FALSE
+)
 }
 \arguments{
 \item{order_id}{request order id (output from `planet_order_request()` or `planet_order_request_items()`)}
@@ -14,6 +21,10 @@ planet_order_download(order_id, exportfolder, api_key, wait = FALSE)
 \item{api_key}{a string containing your API Key for your planet account}
 
 \item{wait}{defaults to FALSE. Should the algorithm wait until the order is ready (TRUE), or cancel the task (FALSE)}
+
+\item{redownload}{defaults to FALSE. Should the algorithm check if files exist in the exportfolder (FALSE), or redownload all files (TRUE)}
+
+\item{downloadcount}{defaults to FALSE. Should a ticker be presented displaying the percentage of files downloaded from the order}
 }
 \description{
 This function allows you to download orders from the Planet 'Orders' API, after placing the order using the `planet_order_request()` or `planet_order_request_items()` functions
