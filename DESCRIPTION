@@ -19,7 +19,10 @@ Imports:
     stringr (>= 1.4.0),
     sf (>= 1.0-1),
     terra,
-    lubridate
+    lubridate,
+    doSNOW,
+    snow,
+    foreach
 Suggests: 
     mapedit,
     here (>= 1.0.1)

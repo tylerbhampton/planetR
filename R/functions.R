@@ -570,6 +570,8 @@ planet_order_request_items <-
 #' @param wait defaults to FALSE. Should the algorithm wait until the order is ready (TRUE), or cancel the task (FALSE)
 #' @param redownload defaults to FALSE. Should the algorithm check if files exist in the exportfolder (FALSE), or redownload all files (TRUE)
 #' @param downloadcount defaults to FALSE. Should a ticker be presented displaying the percentage of files downloaded from the order
+#' @param parallel_download defaults to FALSE. Should items in the order be downloaded in parallel (using doSNOW)
+#' @param parallel_cores defaults to NULL. Specify number of cores for parallel download
 #' @keywords Planet
 #' @export
 
@@ -579,7 +581,9 @@ planet_order_download <- function(order_id,
                                   api_key,
                                   wait = FALSE,
                                   redownload = FALSE,
-                                  downloadcount = FALSE
+                                  downloadcount = FALSE,
+                                  parallel_download = FALSE,
+                                  parallel_cores = NULL
                                   ) {
   #GET order for download
   #If you lose the order_id, don't redo the request, log onto planet and find it in the orders menu
@@ -617,36 +621,81 @@ planet_order_download <- function(order_id,
       #First create download folder:
       dir.create(exportfolder, showWarnings = F)
 
-      #Download each item in order
-      for (i in 1:length(get_content$`_links`$results)) {
-        if(downloadcount){
-          print(paste0("Download: ", signif(100 * (
-            i / length(get_content$`_links`$results)
-          ), 1), "%"))
-        }
-        #find item names in order contents
-        name <- get_content$`_links`$results[[i]]$name
-        findslash <- gregexpr("/", name)
-        startchar <- findslash[[1]][length(findslash[[1]])] + 1
-        filename <- substr(name, startchar, nchar(name))
+      if(!parallel_download){
+        #Download each item in order
+        for (i in 1:length(get_content$`_links`$results)) {
+          if(downloadcount){
+            print(paste0("Download: ", signif(100 * (
+              i / length(get_content$`_links`$results)
+            ), 1), "%"))
+          }
+          #find item names in order contents
+          name <- get_content$`_links`$results[[i]]$name
+          findslash <- gregexpr("/", name)
+          startchar <- findslash[[1]][length(findslash[[1]])] + 1
+          filename <- substr(name, startchar, nchar(name))
 
-        if(!file.exists(file.path(exportfolder,filename)) | redownload){
-          download_url <- get_content$`_links`$results[[i]]$location
+          if(!file.exists(file.path(exportfolder,filename)) | redownload){
+            download_url <- get_content$`_links`$results[[i]]$location
 
-          httr::RETRY(
-            "GET",
-            url = download_url,
-            username = api_key,
-            httr::write_disk(
-              path = paste(exportfolder, filename, sep = "/"),
-              overwrite = TRUE
+            httr::RETRY(
+              "GET",
+              url = download_url,
+              username = api_key,
+              httr::write_disk(
+                path = paste(exportfolder, filename, sep = "/"),
+                overwrite = TRUE
+              )
             )
-          )
+          }
+        }
+      }
+      if(parallel_download){
+        if(is.null(parallel_cores)){print("Error: Number of Cores not specified: Download Cancelled")}
+        if(!is.null(parallel_cores)){
+
+          planet_order_download_parallel = function(i,get_content,exportfolder,api_key,redownload){
+            name <- get_content$`_links`$results[[i]]$name
+            findslash <- gregexpr("/", name)
+            startchar <- findslash[[1]][length(findslash[[1]])] + 1
+            filename <- substr(name, startchar, nchar(name))
+
+            if(!file.exists(file.path(exportfolder,filename)) | redownload){
+              download_url <- get_content$`_links`$results[[i]]$location
+
+              httr::RETRY(
+                "GET",
+                url = download_url,
+                username = api_key,
+                httr::write_disk(
+                  path = paste(exportfolder, filename, sep = "/"),
+                  overwrite = TRUE
+                )
+              )
+            }
+          }
+
+          number_items_download = length(get_content$`_links`$results)
+          pb <- utils::txtProgressBar(min = 1, max = number_items_download, style = 3)
+          cl <- snow::makeSOCKcluster(parallel_cores)
+          doSNOW::registerDoSNOW(cl)
+          progress <- function(n) utils::setTxtProgressBar(pb, n)
+          opts <- list(progress=progress)
+          print("...Downloading in parallel...")
+          foreach::foreach(i=1:number_items_download, .packages=c("httr"), .options.snow=opts,
+                           .combine='c') %dopar% {
+                             planet_order_download_parallel(i,get_content,
+                                          exportfolder,api_key,redownload)}
+          print(paste0("Download in parallel complete"))
+          close(pb)
+          snow::stopCluster(cl)
         }
       }
 
-      print(paste0("Download complete"))
-      print(paste0("Items located in ", getwd(), "/", exportfolder))
+      if(!parallel_download | (parallel_download & !is.null(parallel_cores))){
+        print(paste0("Download complete"))
+        print(paste0("Items located in ", getwd(), "/", exportfolder))
+      }
     }
   }
 }

@@ -10,7 +10,9 @@ planet_order_download(
   api_key,
   wait = FALSE,
   redownload = FALSE,
-  downloadcount = FALSE
+  downloadcount = FALSE,
+  parallel_download = FALSE,
+  parallel_cores = NULL
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ planet_order_download(
 \item{redownload}{defaults to FALSE. Should the algorithm check if files exist in the exportfolder (FALSE), or redownload all files (TRUE)}
 
 \item{downloadcount}{defaults to FALSE. Should a ticker be presented displaying the percentage of files downloaded from the order}
+
+\item{parallel_download}{defaults to FALSE. Should items in the order be downloaded in parallel (using doSNOW)}
+
+\item{parallel_cores}{defaults to NULL. Specify number of cores for parallel download}
 }
 \description{
 This function allows you to download orders from the Planet 'Orders' API, after placing the order using the `planet_order_request()` or `planet_order_request_items()` functions
